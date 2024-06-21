@@ -2,6 +2,8 @@
 
 ## Abstract
 
+Credentials give information about a subject which helps in its recognition by a third party, usually to provide a service or state an assertion giving its traits. The verification of credentials needs additional information to assert the validity of the information contained in it. This specification provides a way to store verifiable credential status information and verify it in a decentralized context.
+
 ## Status of the document
 
 ## 1. Introduction
