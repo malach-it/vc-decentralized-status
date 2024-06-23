@@ -96,5 +96,6 @@ resolve status_token(secret: string, status_token: string): string {
 ### 6.1 Decentralized Architecture
 ### 6.2 Status list storage
 ### 6.3 Granularity
+Some verifiable credential formats support selective disclosure enabling to share part of the data contained in the verifiable credential payload without disclosing the remaining part. Status tokens can reference individual information or a set of disclosures. Taking the example of [Selective Disclosure for JWTs](https://www.ietf.org/archive/id/draft-ietf-oauth-selective-disclosure-jwt-09.html), the status token can replace the suggested opaque salt to include the status information of the associated disclosure. The decentralization architecture of this suggested specification makes the status storage to be handled by the holders helping to reduce to weight of single place storages.
 ### 6.4 Disclosure
 ### 6.5 Scaling
