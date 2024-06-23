@@ -96,11 +96,16 @@ resolve status_token(secret: string, status_token: string): string {
 ## 6. Privacy Considerations
 
 ### 6.1 Decentralized Architecture
+
 Status tokens are self-contained but only resolvable by the issuer, the decentralized architecture give a way to have low weighted storage points. To state the status of verifiable credentials and keep the holder privacy, verifiers can resolve the status of the presented verifiable credentials  without disclosing the resolved credential to the issuer in any manner. Mitigated by the fact that Time To Live information can give hints about the type of credential resolved. The status information contained in the token information can be a disclosure of the type of credential if not standarized.
 
-### 6.2 Status list storage
+### 6.2 Status list
+
+The status list represents the association of statuses with an integer shift for lowering to a tiny list the issuer needed storage. Ths integer shifts list is encoded in the status token so can be considered as public. The status list may be standarized globally or issuer wide for the whole set of credentials emmited by an issuer to lower the verifiable credentials type disclosability.
 
 ### 6.3 Granularity
+
 Some verifiable credential formats support selective disclosure enabling to share part of the data contained in the verifiable credential payload without disclosing the remaining part. Status tokens can reference individual information or a set of disclosures. Taking the example of [Selective Disclosure for JWTs](https://www.ietf.org/archive/id/draft-ietf-oauth-selective-disclosure-jwt-09.html), the status token can replace the suggested opaque salt to include the status information of the associated disclosure. The decentralization architecture of this suggested specification makes the status storage to be handled by the holders helping to reduce to weight of single place storages.
+
 ### 6.4 Disclosure
 ### 6.5 Scaling
