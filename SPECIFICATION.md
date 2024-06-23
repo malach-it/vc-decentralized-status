@@ -28,11 +28,11 @@ On top of the [Verifiable Credentials Data Model v2.0 Terminology](https://www.w
 ### 3.2 Status information
 ### 3.1 Status Derivated token
 ## 4. Algorithms
-### 4.2 Status information
+### 4.1 Status information
 ```
 <random bytes>{4}<binary encode Time To Live>{4}<binary encoded status>{1}+
 ```
-### 4.1 Status Derivated token
+### 4.2 Status Derivated token
 ## 5. Usage
 ### 5.1 Crafting a verifiable credential status token
 ```
@@ -53,7 +53,8 @@ generate_status_token(secret: string, ttl: int, status: string): int {
 ```
 ### 5.2 Resolving a verifiable credential status token
 ```
-decode_token_info(token_info) {
+@status_table = { status: string -> shift: int }
+decode_token_info(token_info: string): hashtable {
 	result = REDUCE(
 		BYTES(status_token),
 		{ ttl => [], statuses => [], memory => [] },
@@ -77,11 +78,11 @@ decode_token_info(token_info) {
 	return result
 }
 
-resolve status_token(secret, status_token) {
+resolve status_token(secret: string, status_token: string): string {
 	[token_info, derived_status] = SPLIT(status_token, '~')
 	info = decode_token_info(BASE64_DECODE(token_info))
 	REDUCE(
-		@status_list,
+		@status_table,
 		'invalid',
 		lambda (status, shift), result:
 			if HOTP(secret, DIV(NOW(), info[ttl]) + shift) == derived_status
@@ -89,7 +90,6 @@ resolve status_token(secret, status_token) {
 			else
 				return 'invalid'
 	)
-
 }
 ```
 ## 6. Privacy Considerations
