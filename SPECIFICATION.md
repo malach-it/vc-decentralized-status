@@ -2,7 +2,7 @@
 
 ## Abstract
 
-Credentials give information about a subject that helps in its recognition by a third party, usually to provide a service or state an assertion giving its traits. The verification of credentials needs additional information to assert the validity of the information contained in it. This specification provides a way to store verifiable credential status information and verify it in a decentralized context.
+Credentials give information about a subject that helps in its recognition by a third party, usually to provide a service or state an assertion giving its traits. The verification of credentials needs additional information to assert the validity of the information contained in it. This specification provides a way to store verifiable credential status information and verify it in a decentralized context. The architecture enables for the verifiable credentials holders to store derived status information that can only be resolved by the issuer without storage needs.
 
 ## Status of the document
 
@@ -97,7 +97,7 @@ resolve status_token(secret: string, status_token: string): string {
 
 ### 6.1 Decentralized Architecture
 
-Status tokens are self-contained but only resolvable by the issuer, the decentralized architecture give a way to have low weighted storage points. To state the status of verifiable credentials and keep the holder privacy, verifiers can resolve the status of the presented verifiable credentials without disclosing the resolved credential to the issuer in any manner. Mitigated by the fact that Time To Live information can give hints about the type of credential resolved. The status information contained in the token information can be a disclosure of the type of credential if not standarized.
+Status tokens are self-contained but only resolvable by the issuer which own a secret component, the decentralized architecture give a way to have low weighted storage points. To state the status of verifiable credentials and keep the holder privacy, verifiers can resolve the status of the presented verifiable credentials without disclosing the resolved credential to the issuer in any manner. Mitigated by the fact that Time To Live information can give hints about the type of credential resolved. The status information contained in the token information can be a disclosure of the type of credential if not standarized.
 
 ### 6.2 Status list
 
