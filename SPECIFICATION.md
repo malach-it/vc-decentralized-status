@@ -2,7 +2,7 @@
 
 ## Abstract
 
-Credentials give information about a subject that helps in its recognition by a third party, usually to provide a service or state an assertion giving its traits. The verification of credentials needs additional information to assert the validity of the information contained in it. This specification provides a way to store verifiable credential status information and verify it in a decentralized context. The architecture enables the verifiable credentials holders to store derived status information that can only be resolved by the issuer without prior storage.
+Credentials give information about a subject that helps in its recognition by a third party, usually to provide a service or state an assertion giving its traits. The verification of credentials needs additional information to assert the validity of the information contained in it. This specification provides a way to store verifiable credential status and verify it in a decentralized context. The architecture enables the verifiable credentials holders to store derived status information that can only be resolved by the issuer without prior centralized storage.
 
 ## Status of the document
 
@@ -10,13 +10,17 @@ This document is a working draft of a possible specification.
 
 ## 1. Introduction
 ### 1.1 Underlying specifications
+
 - HOTP
 - Decentralized IDentifiers
 - Verifiable Credentials Data Model
+
 ### 1.2 Underlying Concepts
+
 - Verifying a verifiable credential
 
 ### 1.3 Conformance
+
 TBD
 
 ### 2. Terminology
@@ -37,6 +41,10 @@ Status tokens are the major components of this specification. They enable holder
 ### 3.2 Status information
 
 The status information, as the first part of status tokens, is encoded to store a low-weighted payload that contains the token time to live and the possible statuses [those may not be mandatory if standardized by the issuer]. It helps to resolve the status contained in the derived token. A random part is also available to have the unicity of status tokens [may be added to the secret of the HOTP algorithm to also have the unicity of the derivation]. The contained information is stored in a binary format and URL-safe base 64 encoded.
+
+```
+<random bytes>{4}<binary encode Time To Live>{4}<binary encoded status>{1}+
+```
 
 The random part may be a fixed-sized list of bytes. The time to live may be padded binary encoded integer to save storage. The statuses are a list of single-byte integers making the ability to have 256 possible statuses. Those parts may be concatenated to form the status information.
 
@@ -71,16 +79,14 @@ GET https://api.godiddy.com/0.1.0/universal-resolver/identifiers/did:indy:danube
 303 See Other
 Location: https://oauth.boruta.patatoid.fr/did/public/resolve_status/YjY4NTAzMTgBw6EzwoAhLDc=~1e5e40e7
 ```
+
 ### 4.2 Interfaces
+
 TBD
-## 5. Algorithms
-### 5.1 Status information
-```
-<random bytes>{4}<binary encode Time To Live>{4}<binary encoded status>{1}+
-```
-### 5.2 Status Derivated token
-## 6. Usage
-### 6.1 Crafting a verifiable credential status token
+
+## 5. Implementation
+### 5.1 Crafting a verifiable credential status token
+
 ```
 @status_table = { status: string -> shift: int }
 shift(status: string): int {
@@ -97,7 +103,9 @@ generate_status_token(secret: string, ttl: int, status: string): int {
   return "<token_info>~<derived_status>"
 }
 ```
-### 6.2 Resolving a verifiable credential status token
+
+### 5.2 Resolving a verifiable credential status token
+
 ```
 @status_table = { status: string -> shift: int }
 decode_token_info(token_info: string): hashtable {
@@ -139,16 +147,16 @@ resolve status_token(secret: string, status_token: string): string {
 }
 ```
 
-## 7. Privacy Considerations
+## 6. Privacy Considerations
 
-### 7.1 Decentralized Architecture
+### 6.1 Decentralized Architecture
 
-Status tokens are self-contained but only resolvable by the issuer which owns a secret component, the decentralized architecture gives a way to have low-weighted storage points. To state the status of verifiable credentials and keep the holder's privacy, verifiers can resolve the status of the presented verifiable credentials without disclosing the resolved ones to the issuer in any manner. Mitigated by the fact that Time To Live information can give hints about the type of credential resolved. The status information contained in the token information can be a disclosure of the type of credential if not standardized.
+Status tokens are self-contained but only resolvable by the issuer which owns a secret component, the decentralized architecture gives a way to have low-weighted storage points. To state the validity of verifiable credentials and keep the holder's privacy, verifiers can resolve the status of the presented credentials without disclosing the data contained in it to the issuer in any manner. Mitigated by the fact that Time To Live information can give hints about the type of credential resolved. The status information contained in the token information can also be a disclosure of the type of credential if not standardized.
 
-### 7.2 Status list
+### 6.2 Status list
 
 The status list represents the association of statuses with an integer shift for lowering to a tiny list the issuer needed storage. The integer shifts list is encoded in the status token so can be considered public. The status list may be standardized globally or issuer-wide for the whole set of credentials emitted by an issuer to lower the verifiable credentials type disclosability.
 
-### 7.3 Granularity
+### 6.3 Granularity
 
-Some verifiable credential formats support selective disclosure enabling to sharing of part of the data contained in the verifiable credential payload without disclosing the remaining part. Status tokens can reference individual information or a set of disclosures. Taking the example of [Selective Disclosure for JWTs](https://www.ietf.org/archive/id/draft-ietf-oauth-selective-disclosure-jwt-09.html), the status token can replace the suggested opaque salt to include the status information of the associated disclosure. The decentralization architecture of this suggested specification makes the status storage to be handled by the holders helping to reduce to weight of single-place storage.
+Some verifiable credential formats support selective disclosure enabling to share part of the data contained in the verifiable credential payload without disclosing the remaining part. Status tokens can reference individual information or a set of disclosures. Taking the example of [Selective Disclosure for JWTs](https://www.ietf.org/archive/id/draft-ietf-oauth-selective-disclosure-jwt-09.html), the status token can replace the suggested opaque salt to include the status information of the associated disclosure. The decentralization architecture of this suggested specification makes the status storage to be handled by the holders helping to reduce the weight of single-place storage.
