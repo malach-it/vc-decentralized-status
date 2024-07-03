@@ -11,6 +11,8 @@ This document is a working draft of a possible specification.
 ## 1. Introduction
 ### 1.1 Underlying specifications
 - HOTP
+- Decentralized IDentifiers
+- Verifiable Credentials Data Model
 ### 1.2 Underlying Concepts
 - Verifying a verifiable credential
 
@@ -27,12 +29,17 @@ On top of the [Verifiable Credentials Data Model v2.0 Terminology](https://www.w
 
 ## 3. Data Model
 ### 3.1 Status Tokens
+![token anatomy](https://raw.githubusercontent.com/malach-it/vc-decentralized-status/main/images/sotp.png)
+
 ### 3.2 Status information
+
 ### 3.1 Derived Status
+![Status derivation](https://raw.githubusercontent.com/malach-it/vc-decentralized-status/main/images/non-opaque-salt.png)
+
 ## 4. Status Information Requests
 ### 4.1 Decentralized IDentifier services
 
-To fetch the status of a verifiable credentials, the verifier is suggested to make use of [Decentralized IDentifiers parameters](https://www.w3.org/TR/did-core/#did-parameters). The registration of a service within the DID document help to proxy an issuer endpoint that has the ability resolve the status. The issuer may implement the 6.2 algorithm to resolve the status token value. The Verifiable credentials issuer may use the private key associated with the public one stored remotely in the associated DID document to sign a credential. The proximity of the signing key and the way to get the credential status help the verifier to add the lesser to its implementation but can consider status verification as an addition. The DID service registration is temper proof giving a way to keep status resolvance endpoints history. The resolvance endpoint must be secured with TLS and provide a valid certificate to assess the issuer authority which may be part of a trust chain. The registered service may proxy the resolvance of the status token. That service endpoint would use the `relativeRef` component to get the status token parameter and respond with the status for proxied verifier requests.
+To fetch the status of a verifiable credentials, the verifier is suggested to make use of [Decentralized IDentifiers parameters](https://www.w3.org/TR/did-core/#did-parameters). The registration of a service within the DID document help to proxy an issuer endpoint that has the ability resolve the status. The issuer may implement the 6.2 algorithm to resolve the status token value. The Verifiable credentials issuer may use the private key associated with the public one stored remotely in the associated DID document to sign a credential. The proximity of the signing key and the way to get the credential status help the verifier to add the lesser to its implementation but can consider status verification as an addition. The DID service registration gives a way to keep status resolvance endpoints unforgeable history. The resolvance endpoint must be secured with TLS and provide a valid certificate to assess the issuer authority which may be part of a trust chain. The registered service may proxy the resolvance of the status token. That service endpoint would use the `relativeRef` component to get the status token parameter and respond with the status for proxied verifier requests.
 
 #### Example
 A. Did document
@@ -56,6 +63,7 @@ GET https://api.godiddy.com/0.1.0/universal-resolver/identifiers/did:indy:danube
 Location: https://oauth.boruta.patatoid.fr/did/public/resolve_status/YjY4NTAzMTgBw6EzwoAhLDc=~1e5e40e7
 ```
 ### 4.2 Interfaces
+TBD
 ## 5. Algorithms
 ### 5.1 Status information
 ```
