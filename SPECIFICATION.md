@@ -29,12 +29,21 @@ On top of the [Verifiable Credentials Data Model v2.0 Terminology](https://www.w
 
 ## 3. Data Model
 ### 3.1 Status Tokens
+
+Status tokens are the major components of this specification. They enable holders to store the status information without disclosing it, making the status only resolvable by the issuer. Those tokens are made of two parts: the first contains encoded information that helps the resolvance of the second part. The later contains a status cryptographic derivation.
+
 ![token anatomy](https://raw.githubusercontent.com/malach-it/vc-decentralized-status/main/images/sotp.png)
 
 ### 3.2 Status information
 
+The status information, as the first part of status tokens, is encoded in order to store a low weighted payload that contains the token time to live and the possible statuses [those may not be mandatory if standardized by the issuer]. It helps to resolve the status contained in the derived token. A random part is also available in order to have unicity of status tokens [may be added to the secret of the HOTP algorithm to also have unicity of the derivation]. The contained information is stored in a binary format and URL safe base 64 encoded.
+
+The random part may be a fixed sized list of bytes. The time to live may be padded binary encoded integer to save storage. The statuses are a list of single byte integers making the ability to have 256 possible statuses. Those parts may be concatenated to form the status information.
+
 ### 3.1 Derived Status
 ![Status derivation](https://raw.githubusercontent.com/malach-it/vc-decentralized-status/main/images/non-opaque-salt.png)
+
+Using the HOTP algorithm with a secret kept by the issuer and a counter made of unix timestamp and status shift, we can derive the status but keep also the expiry information both in the same token. Noticing that the shift preserve the validity range size, the next checks within the expiration time will succeed providing the same shift. Also the more you take HOTP HMAC value bytes, the more the token will fail to collide improving the entropy of the derivation.
 
 ## 4. Status Information Requests
 ### 4.1 Decentralized IDentifier services
