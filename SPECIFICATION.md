@@ -8,6 +8,10 @@ Credentials give information about a subject that helps in its recognition by a 
 
 This document is a working draft of a possible specification.
 
+## Motivation
+
+As stated the status adds information to verifiable credentials to assert credential validity. That piece of information anotates data, the closer it is to the actual information it denotes, the less there are possibility of uncoupling of the data and its status. Providing a way to store both information at the same place gives a way to have that proximity. The decentralized way of seeing status storage differ from actual status list specifications since it requires no centralized storage for statuses which makes them faster to resolve but also makes other tradeoffs about privacy (see 6. Privacy considerations) staying reasonable with those concern. This specification is open to contributions to better solve the status issue revocation being still an ongoing work.
+
 ## 1. Introduction
 ### 1.1 Underlying specifications
 
@@ -160,3 +164,9 @@ The status list represents the association of statuses with an integer shift for
 ### 6.3 Granularity
 
 Some verifiable credential formats support selective disclosure enabling to share part of the data contained in the verifiable credential payload without disclosing the remaining part. Status tokens can reference individual information or a set of disclosures. Taking the example of [Selective Disclosure for JWTs](https://www.ietf.org/archive/id/draft-ietf-oauth-selective-disclosure-jwt-09.html), the status token can replace the suggested opaque salt to include the status information of the associated disclosure. The decentralization architecture of this suggested specification makes the status storage to be handled by the holders helping to reduce the weight of single-place storage.
+
+### 6.4 Anotation
+
+By definition a status is an anotation on the data it denotes. Following this specification, the issuer is not limited for the statuses it set which may include statuses the holder may not be aware of. Whhile this information is not public, the issuer can hide statuses for the holder and have the ability to track them on verfication during the verification. When the verifier contacts the issuer to get the status, the latter has the ability to track the remote ip of the verifier making then the usage of the custom statuses. This issue may be mitigated by reducing the possible statuses which may not be possible with the suggested algorithms or by making the status publicly readable for both the holder and the verifier.
+- not being public, the issuer can set custom statuses
+- those statuses can be tracked while verifying the status if the issuer tracks the origin of the requests
