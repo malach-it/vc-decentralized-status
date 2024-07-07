@@ -42,6 +42,11 @@ Status tokens are the major components of this specification. They enable holder
 
 ![token anatomy](https://raw.githubusercontent.com/malach-it/vc-decentralized-status/main/images/sotp.png)
 
+#### Example
+```
+bzTDksOEEsOMAwA~41a02762
+```
+
 ### 3.2 Status information
 
 The status information, as the first part of status tokens, is encoded to store a low-weighted payload that contains the token time to live and the possible statuses [those may not be mandatory if standardized by the issuer]. It helps to resolve the status contained in the derived token. A random part is also available to have the unicity of status tokens [may be added to the secret of the HOTP algorithm to also have the unicity of the derivation]. The contained information is stored in a binary format and URL-safe base 64 encoded.
