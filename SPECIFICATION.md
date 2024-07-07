@@ -47,7 +47,7 @@ Status tokens are the major components of this specification. They enable holder
 The status information, as the first part of status tokens, is encoded to store a low-weighted payload that contains the token time to live and the possible statuses [those may not be mandatory if standardized by the issuer]. It helps to resolve the status contained in the derived token. A random part is also available to have the unicity of status tokens [may be added to the secret of the HOTP algorithm to also have the unicity of the derivation]. The contained information is stored in a binary format and URL-safe base 64 encoded.
 
 ```
-<random bytes>{4}<binary encode Time To Live>{4}<binary encoded status>{1}+
+<random bytes>{4}<binary encode Time To Live>{4}
 ```
 
 The random part may be a fixed-sized list of bytes. The time to live may be padded binary encoded integer to save storage. The statuses are a list of single-byte integers making the ability to have 256 possible statuses. Those parts may be concatenated to form the status information.
@@ -92,16 +92,15 @@ TBD
 ### 5.1 Crafting a verifiable credential status token
 
 ```
-@status_table = { status: string -> shift: int }
+@status_table = [ status: string ]
 shift(status: string): int {
-  @status_table[status]
+  BINARY_DECODE_UNSIGNED(BINARY_ENCODE(status))
 }
 generate_status_token(secret: string, ttl: int, status: string): int {
   random = RANDOM_BYTES(4)
   time_to_live = BINARY_ENCODE(ttl)
-  statuses = MAP(@status_table, lambda s: BINARY_ENCODE(shift(s)))
 
-  token_info = BASE64_ENCODE(random + time_to_live + statuses)
+  token_info = BASE64_ENCODE(random + time_to_live)
   derived_status = HTOP(secret, DIV(NOW(), ttl) + shift(status))
 
   return "<token_info>~<derived_status>"
@@ -128,9 +127,6 @@ decode_token_info(token_info: string): hashtable {
 				acc[ttl] = BINARY_DECODE(acc[memory])
 				RESET(acc[memory])
 				return acc
-			WHEN index > 7
-				PUSH(acc[statuses], byte)
-				return acc
 	)
 	DELETE result[memory]
 	return result
@@ -142,8 +138,8 @@ resolve status_token(secret: string, status_token: string): string {
 	REDUCE(
 		@status_table,
 		'invalid',
-		lambda (status, shift), result:
-			if HOTP(secret, DIV(NOW(), info[ttl]) + shift) == derived_status
+		lambda status, result:
+			if HOTP(secret, DIV(NOW(), info[ttl]) + shift(status)) == derived_status
 				return status
 			else
 				return 'invalid'
