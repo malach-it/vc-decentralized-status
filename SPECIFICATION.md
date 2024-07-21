@@ -34,6 +34,7 @@ On top of the [Verifiable Credentials Data Model v2.0 Terminology](https://www.w
 - __verifiable credential status__: The status of a verifiable credential at a given point in time. The different statuses give information about the validity of the verifiable credential data. This information can be given for a set of verifiable credentials providing the status of each piece of information in a more convenient way.
 - __status information__
 - __status token__
+- __status table__
 
 ## 3. Data Model
 ### 3.1 Status Tokens
@@ -55,7 +56,7 @@ The status information, as the first part of status tokens, is encoded to store 
 <random bytes>{4}<binary encode Time To Live>{4}
 ```
 
-The random part may be a fixed-sized list of bytes. The time to live may be padded binary encoded integer to save storage. The statuses are a list of single-byte integers making the ability to have 256 possible statuses. Those parts may be concatenated to form the status information.
+The random part may be a fixed-sized list of bytes. The time to live may be padded binary encoded integer to save storage. Those parts may be concatenated to form the status information.
 
 ### 3.1 Derived Status
 ![Status derivation](https://raw.githubusercontent.com/malach-it/vc-decentralized-status/main/images/non-opaque-salt.png)
@@ -115,11 +116,14 @@ generate_status_token(secret: string, ttl: int, status: string): int {
 ### 5.2 Resolving a verifiable credential status token
 
 ```
-@status_table = { status: string -> shift: int }
+@status_table = [ status: string ]
+shift(status: string): int {
+  BINARY_DECODE_UNSIGNED(BINARY_ENCODE(status))
+}
 decode_token_info(token_info: string): hashtable {
 	result = REDUCE(
 		BYTES(status_token),
-		{ ttl => [], statuses => [], memory => [] },
+		{ ttl => [], memory => [] },
 		lambda (byte, index), acc:
 			CASE index
 			WHEN index < 4
@@ -158,9 +162,9 @@ resolve status_token(secret: string, status_token: string): string {
 
 Status tokens are self-contained but only resolvable by the issuer which owns a secret component, the decentralized architecture gives a way to have low-weighted storage points. To state the validity of verifiable credentials and keep the holder's privacy, verifiers can resolve the status of the presented credentials without disclosing the data contained in it to the issuer in any manner. Mitigated by the fact that Time To Live information can give hints about the type of credential resolved. The status information contained in the token information can also be a disclosure of the type of credential if not standardized.
 
-### 6.2 Status list
+### 6.2 Status table
 
-The status list represents the association of statuses with an integer shift for lowering to a tiny list the issuer needed storage. The integer shifts list is encoded in the status token so can be considered public. The status list may be standardized globally or issuer-wide for the whole set of credentials emitted by an issuer to lower the verifiable credentials type disclosability.
+The status table represents the list of possible statuses that are encoded into a shift integer for lowering to a tiny list the issuer needed storage. The status list may be standardized globally or issuer-wide for the issuer emitted set of credentials to lower the verifiable credentials type disclosability. The status token being part of a credential and including a time to live, a way to check if statuses are hidden is to resolve it against a given status table whether the status token is valid to ensure a status is found. Otherwise, a hidden status has been set by the issuer. This check can be performed with a past timestamp, then, once issued there will always be a way to check if the status of a token has been hidden provided an issuer secret.
 
 ### 6.3 Granularity
 
