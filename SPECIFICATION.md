@@ -45,7 +45,7 @@ Status tokens are the major components of this specification. They enable holder
 
 #### Example
 ```
-bzTDksOEEsOMAwA~41a02762
+wpfDjsKrwrkSw4wDAA~3a479fde
 ```
 
 ### 3.2 Status information
@@ -83,11 +83,11 @@ A. Did document
 ```
 B. Request
 ```
-GET https://api.godiddy.com/0.1.0/universal-resolver/identifiers/did:indy:danube:VUQ36xG7PRccjojjgzmJBa?service=statusSolver&relativeRef=YjY4NTAzMTgBw6EzwoAhLDc=~1e5e40e7
+GET https://api.godiddy.com/0.1.0/universal-resolver/identifiers/did:indy:danube:VUQ36xG7PRccjojjgzmJBa?service=statusSolver&relativeRef=wpfDjsKrwrkSw4wDAA~3a479fde
 
 
 303 See Other
-Location: https://oauth.boruta.patatoid.fr/did/public/resolve_status/YjY4NTAzMTgBw6EzwoAhLDc=~1e5e40e7
+Location: https://oauth.boruta.patatoid.fr/did/public/resolve_status/wpfDjsKrwrkSw4wDAA~3a479fde
 ```
 
 ### 4.2 Interfaces
