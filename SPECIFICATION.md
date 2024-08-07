@@ -50,13 +50,13 @@ wpfDjsKrwrkSw4wDAA~3a479fde
 
 ### 3.2 Status information
 
-The status information, as the first part of status tokens, is encoded to store a low-weighted payload that contains the token time to live and the possible statuses [those may not be mandatory if standardized by the issuer]. It helps to resolve the status contained in the derived token. A random part is also available to have the unicity of status tokens [may be added to the secret of the HOTP algorithm to also have the unicity of the derivation]. The contained information is stored in a binary format and URL-safe base 64 encoded.
+The status information, as the first part of status tokens, is encoded to store a low-weighted payload that contains the iat and the token time to live. It helps to resolve the status contained in the derived token. Not being part of token verification algorithm, this part contains information about when the token was issued. The contained information is stored in a binary format and URL-safe base 64 encoded.
 
 ```
-<random bytes>{4}<binary encode Time To Live>{4}
+<iat>{4}<binary encode Time To Live>{4}
 ```
 
-The random part may be a fixed-sized list of bytes. The time to live may be padded binary encoded integer to save storage. Those parts may be concatenated to form the status information.
+The iat may be a 7 bytes long and binary encoded. The time to live may also be padded binary encoded integer to save storage. Those parts may be concatenated to form the status information.
 
 ### 3.1 Derived Status
 ![Status derivation](https://raw.githubusercontent.com/malach-it/vc-decentralized-status/main/images/non-opaque-salt.png)
@@ -103,11 +103,11 @@ shift(status: string): int {
   BINARY_DECODE_UNSIGNED(BINARY_ENCODE(status))
 }
 generate_status_token(secret: string, ttl: int, status: string): int {
-  random = RANDOM_BYTES(4)
-  time_to_live = BINARY_ENCODE(ttl)
+  iat = BINARY_ENCODE(NOW(:microsecond)) # 7 bytes long
+  time_to_live = PAD_LEFT(BINARY_ENCODE(ttl), 4) # 4 bytes long
 
-  token_info = BASE64_ENCODE(random + time_to_live)
-  derived_status = HTOP(secret, DIV(NOW(), ttl) + shift(status))
+  token_info = BASE64_ENCODE(iat + time_to_live)
+  derived_status = HTOP(secret, DIV(NOW(:second), ttl) + shift(status))
 
   return "<token_info>~<derived_status>"
 }
@@ -121,21 +121,24 @@ shift(status: string): int {
   BINARY_DECODE_UNSIGNED(BINARY_ENCODE(status))
 }
 decode_token_info(token_info: string): hashtable {
-	result = REDUCE(
-		BYTES(status_token),
-		{ ttl => [], memory => [] },
-		lambda (byte, index), acc:
-			CASE index
-			WHEN index < 4
-				acc
-			WHEN index < 7
-				PUSH(acc[memory], byte)
-				return acc
-			WHEN index == 7
-				PUSH(acc[memory], byte)
-				acc[ttl] = BINARY_DECODE(acc[memory])
-				RESET(acc[memory])
-				return acc
+  result = REDUCE(
+      BYTES(status_token),
+      { iat => 0, ttl => 0, memory => [] },
+      lambda (byte, index), acc:
+      CASE index
+      WHEN index == 7
+        PUSH(acc[memory], byte)
+        acc[iat] = BINARY_DECODE(acc[memory])
+        RESET(acc[memory])
+        return acc
+      WHEN index == 10
+        PUSH(acc[memory], byte)
+        acc[ttl] = BINARY_DECODE(acc[memory])
+        RESET(acc[memory])
+        return acc
+      ELSE
+        PUSH(acc[memory], byte)
+        return acc
 	)
 	DELETE result[memory]
 	return result
