@@ -122,7 +122,7 @@ shift(status: string): int {
 }
 decode_token_info(token_info: string): hashtable {
   result = REDUCE(
-      BYTES(status_token),
+      BYTES(token_info),
       { iat => 0, ttl => 0, memory => [] },
       lambda (byte, index), acc:
       CASE index

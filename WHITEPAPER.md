@@ -24,16 +24,55 @@ Categories are the key discriminant to provide a custom service, we may be aware
 The categorization of individuals can be a threat if not taken anonymously and in a privacy preserving way. Discrimination is the first appearing danger which can be derived to many others.
 
 ## Identity aspects and granularity
+
+- identity aspect definition
+
 ### the purpose and the aspects
+
+- aspects are sets of claims that are made on purpose (usable peace of information)
+- the purposes in the digital world
+- those sets overlap taking whole or part of identity claims
+- claims are assertions about an entity and can be encapsulated to be shared
+
 ### the data and the context
+
+- sharing identity information is made in a context
+- the asserting authority
+- gathering information about an entity
+- identity information are taken targeting an objective
+
 ### necessary and sufficient
 
+- take only the necessary identity information to deserve a purpose -> disclosures
+- the danger of more than sufficient, meeting other purposes
+- subsets of aspects can deserve other purposes than the original -> zero knowledge proofs
+- the sufficient to be trusted, when not enough comes the annotations
+
 ## Annotating digital identity aspects
-### types of anotations
+
+- annotation definition
+
+### types of annotations
+
+- categorizing annotations, when the possible annotations are of the same category
+- sorted annotation categories enable to sort the entities
+- the will to weight the data according to a purpose
+
 ### sources of annotations
+
+- the authority and the weight
+- the statistical weight, when multiple annotations annotate the same data
+- identity information is used to annotate, the need of other aspects
+
 ### about proximity
 
+- same annotations can be made to different aspects
+- the closest to the data the less confusion
+- the annotation does not alter the data
+- when the purpose is categorization, the proximity bring less failure
+
 ## About categories
+
 ### data vs annotations
 ### who is the authority?
 ### the discriminant factor
