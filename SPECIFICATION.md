@@ -2,7 +2,7 @@
 
 ## Abstract
 
-Credentials give information about a subject that helps in its recognition by a third party, usually to provide a service or state an assertion giving its traits. The verification of credentials needs additional information to assert the validity of the information contained in it. This specification provides a way to store verifiable credential status and verify it in a decentralized context. The architecture enables the verifiable credentials holders to store derived status information that can only be resolved by the issuer without prior centralized storage.
+Credentials give information about a subject that helps in its recognition by a third party, usually to provide a service or state an assertion given its traits. The verification of credentials needs additional information to assert the validity of the information contained in it. This specification provides a way to store verifiable credential status and verify it in a decentralized context. The architecture enables the verifiable credentials holders to store derived status information that can only be resolved by the issuer without prior centralized storage.
 
 ## Status of the document
 
@@ -100,7 +100,7 @@ TBD
 ```
 @status_table = [ status: string ]
 shift(status: string): int {
-  BINARY_DECODE_UNSIGNED(BINARY_ENCODE(status))
+  BINARY_DECODE_UNSIGNED(status)
 }
 generate_status_token(secret: string, ttl: int, status: string): int {
   iat = BINARY_ENCODE(NOW(:microsecond)) # 7 bytes long
@@ -154,7 +154,7 @@ resolve status_token(secret: string, status_token: string): string {
 			if HOTP(secret, DIV(NOW(), info[ttl]) + shift(status)) == derived_status
 				return status
 			else
-				return 'invalid'
+				return result
 	)
 }
 ```
@@ -163,7 +163,7 @@ resolve status_token(secret: string, status_token: string): string {
 
 ### 6.1 Decentralized Architecture
 
-Status tokens are self-contained but only resolvable by the issuer which owns a secret component, the decentralized architecture gives a way to have low-weighted storage points. To state the validity of verifiable credentials and keep the holder's privacy, verifiers can resolve the status of the presented credentials without disclosing the data contained in it to the issuer in any manner. Mitigated by the fact that Time To Live information can give hints about the type of credential resolved. The status information contained in the token information can also be a disclosure of the type of credential if not standardized.
+Status tokens are self-contained but only resolvable by the issuer which owns a secret component, the decentralized architecture gives a way to have low-weighted storage points. To state the validity of verifiable credentials and keep the holder's privacy, verifiers can resolve the status of the presented credentials without disclosing the data contained in it to the issuer in any manner. Mitigated by the fact that Time To Live information can give hints about the type of credential resolved.
 
 ### 6.2 Status table
 

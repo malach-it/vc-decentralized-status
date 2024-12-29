@@ -19,7 +19,7 @@ Seeing the digital identity as claims about an entity, a subset of them can defi
 
 Annotating aspects helps having a more accurate sense of their validity or better adapt the interactions with the person, providing credit to the emitting authority. Anotations give, this way, a manner to weight the data itself.
 
-Categories are the key discriminant to provide a custom service, we may be aware of the importance of those. They can be a factor of discrimination in a law sense, most of them being part of the private domain for individuals. The definition of the subsidient categories is made by the peers' or authorities' interpretation of identity aspects.
+Categories are the key discriminant to provide a custom service, we may be aware of the importance of those. They can be a factor of discrimination in a law sense, most of them being part of the private domain for individuals. The definition of the categories is made by the peers' or authorities' interpretation of identity aspects.
 
 The categorization of individuals can be a threat if not taken anonymously and in a privacy preserving way. Discrimination is the first appearing danger which can be derived to many others.
 
@@ -31,15 +31,15 @@ The categorization of individuals can be a threat if not taken anonymously and i
 
 - aspects are sets of claims that are made on purpose (usable peace of information)
 - the purposes in the digital world
-- those sets overlap taking whole or part of identity claims
+- those sets overlap taking whole or parts of identity claims
 - claims are assertions about an entity and can be encapsulated to be shared
 
 ### the data and the context
 
 - sharing identity information is made in a context
-- the asserting authority
-- gathering information about an entity
-- identity information are taken targeting an objective
+- the asserting authority (self assertions, external assertions)
+- gathering information about an entity, deducing the claims
+- identity information are taken targeting an objective building aspects
 
 ### necessary and sufficient
 
