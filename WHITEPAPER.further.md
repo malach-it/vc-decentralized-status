@@ -18,6 +18,11 @@ The lack of completeness in the denotation is at the origin of incertainity, the
 
 Matter is the reply to a challenge created by the unstability of anti-matter that tends to be complete. Aspects of antimatter that are certain are the material of created matter in reply of the unstability caused by antimatter that is uncomplete. This taking into account that what is human follow the same principles of reality. Maybe.
 
+When matter collide antimatter, a paradox results by the fact that antimatter does not respect the axiom of choice anymore and results an infinite chain of challenge replies looking for stability. Notion of ideal.
+
+stability == respecting the axiom of choice
+stability == being complete
+
 Denotation tends to be complete.
 
 initiation of the recursion is out of the scope of this paper.
