@@ -3,7 +3,7 @@
 ## Glossary
 
 Anotation
--> short explanation or opinion for a text or image
+-> short explanation or opinion for a text or image made to provide meaning to parties
 
 Digital identity
 -> data stored on computer systems relating to an individual, organization, application, or device
