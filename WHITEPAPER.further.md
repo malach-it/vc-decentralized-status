@@ -25,13 +25,15 @@ stability == being complete
 
 Denotation tends to be complete.
 
-initiation of the recursion is out of the scope of this paper.
+Initiation of the recursion is out of the scope of this paper.
 
 ## Annotation
 
 ## Imitation game
 
 Challenging an entity according to the reply forms a chain to accumulate facts. Those create a denotation giving birth to references that challenge again the entity. The reply chains create patterns that, taken as a whole, form the denotation of the entity. The uncertain patterns are challenged until creating a complete space.
+
+challenge prove the response and the response proves the challenge, the definition of not respecting the choice axiom. Notion of paradox.
 
 ## accumulation
 
