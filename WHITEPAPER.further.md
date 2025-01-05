@@ -35,5 +35,7 @@ Challenging an entity according to the reply forms a chain to accumulate facts. 
 
 challenge prove the response and the response proves the challenge, the definition of not respecting the choice axiom. Notion of paradox.
 
+There is no definition of paradox but the definition of paradox. That definition is paradoxal with the paradox.
+
 ## accumulation
 
