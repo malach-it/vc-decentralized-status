@@ -37,5 +37,7 @@ challenge prove the response and the response proves the challenge, the definiti
 
 There is no definition of paradox but the definition of paradox. That definition is paradoxal with the paradox.
 
+Then no paradox has a counterposed
+
 ## accumulation
 
