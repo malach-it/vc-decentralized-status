@@ -41,7 +41,7 @@ The categorization of individuals can be a threat if not taken anonymously and i
 - gathering information about an entity, deducing the claims
 - identity information are taken targeting an objective building aspects
 
-### necessary and sufficient
+### necessary and sufficient information
 
 - take only the necessary identity information to deserve a purpose -> disclosures
 - the danger of more than sufficient, meeting other purposes

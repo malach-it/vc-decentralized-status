@@ -176,3 +176,7 @@ Some verifiable credential formats support selective disclosure enabling to shar
 ### 6.4 Anotation
 
 By definition a status is an anotation on the data it denotes. Following this specification, the issuer is not limited for the statuses it set which may include statuses the holder may not be aware of. While this information is not disclosable, the issuer can hide statuses from the holder and the verifier which gives the ability to track them on verfication. When the verifier contacts the issuer to get the status, the latter has the ability to track the remote ip of the verifier making then the usage of the custom statuses trackable. This issue may be mitigated by reducing the possible statuses which may not be possible with the suggested algorithms or by making the status publicly readable for both the holder and the verifier.
+
+## 7. About revocation
+
+Considering the status as an annotation and that annotations prove the data and the data proves the annotations, seeing them as paradoxes, it is not possible to see revocation within the proposed framework for statuses. It would enforce to break one of the before statements proving the annotation is false and not yet to be considered. Then the revocation subject is quite an important subject to fix impairments. Those contain the identity information itself as a component and corrective actions in the annotation would fail the privacy brought by the decentralized identity concepts enforcing both the holder and the verifier to disclose identity information to the issuer.
