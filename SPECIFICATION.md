@@ -44,6 +44,7 @@ Status tokens are the major components of this specification. They enable holder
 ![token anatomy](https://raw.githubusercontent.com/malach-it/vc-decentralized-status/main/images/sotp.png)
 
 #### Example
+
 ```
 BiwBG3EYQhLDjAMA~2f0f96b9
 ```
@@ -59,17 +60,21 @@ The status information, as the first part of status tokens, is encoded to store 
 The iat may be 7 bytes long and binary encoded. The time to live may also be padded binary encoded integer to save storage. Those parts may be concatenated to form the status information.
 
 ### 3.1 Derived Status
+
 ![Status derivation](https://raw.githubusercontent.com/malach-it/vc-decentralized-status/main/images/non-opaque-salt.png)
 
 Using the HOTP algorithm with a secret kept by the issuer and a counter made of Unix timestamp and status shift, we can derive the status but keep also the expiry information in the same token. Noticing that the shift preserves the validity range size, the next checks within the expiration time will succeed by providing the same shift. Also, the more you take HOTP HMAC value bytes, the more the token will fail to collide improving the entropy of the derivation.
 
 ## 4. Status Information Requests
+
 ### 4.1 Decentralized IDentifier services
 
 To fetch the status of verifiable credentials, the verifier is suggested to make use of [Decentralized IDentifiers parameters](https://www.w3.org/TR/did-core/#did-parameters). The registration of a service within the DID document helps to proxy an issuer endpoint that has the ability to resolve the status. The issuer may implement the 6.2 algorithm to resolve the status token value. The Verifiable credentials issuer may use the private key associated with the public one stored remotely in the associated DID document to sign a credential. The proximity of the signing key and the way to get the credential status help the verifier to add the lesser to its implementation but can consider status verification as an addition. The DID service registration gives a way to keep status resolvance endpoints unforgeable history. The resolvance endpoint must be secured with TLS and provide a valid certificate to assess the issuer authority which may be part of a trust chain. The registered service may proxy the resolvance of the status token. That service endpoint would use the `relativeRef` component to get the status token parameter and respond with the status for proxied verifier requests.
 
 #### Example
+
 A. Did document
+
 ```
 [...]
   "service": [
@@ -81,7 +86,9 @@ A. Did document
   ]
 [...]
 ```
+
 B. Request
+
 ```
 GET https://api.godiddy.com/0.1.0/universal-resolver/identifiers/did:indy:danube:QTP7U54DZXsUpdrwWu27wB?service=statusSolver&relativeRef=BiwBG3EYQhLDjAMA~2f0f96b9
 
@@ -95,6 +102,7 @@ Location: https://oauth.boruta.patatoid.fr/did/resolve_status/BiwBG3EYQhLDjAMA~2
 TBD
 
 ## 5. Implementation
+
 ### 5.1 Crafting a verifiable credential status token
 
 ```
@@ -102,6 +110,7 @@ TBD
 shift(status: string): int {
   BINARY_DECODE_UNSIGNED(status)
 }
+
 generate_status_token(secret: string, ttl: int, status: string): int {
   iat = BINARY_ENCODE(NOW(:microsecond)) # 7 bytes long
   time_to_live = PAD_LEFT(BINARY_ENCODE(ttl), 4) # 4 bytes long
@@ -120,6 +129,7 @@ generate_status_token(secret: string, ttl: int, status: string): int {
 shift(status: string): int {
   BINARY_DECODE_UNSIGNED(BINARY_ENCODE(status))
 }
+
 decode_token_info(token_info: string): hashtable {
   result = REDUCE(
       BYTES(token_info),
@@ -158,6 +168,10 @@ resolve status_token(secret: string, status_token: string): string {
 	)
 }
 ```
+
+### 5.3 Example implementation
+
+You can find an example implementation [here](https://hexdocs.pm/boruta_ssi/0.1.0-beta.1/Boruta.VerifiableCredentials.Status.html).
 
 ## 6. Privacy Considerations
 
