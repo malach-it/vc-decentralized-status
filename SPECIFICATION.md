@@ -2,7 +2,7 @@
 
 ## Abstract
 
-Credentials give information about a subject that helps in its recognition by a third party, usually to provide a service or state an assertion given its traits. The verification of credentials needs additional information to assert the validity of the information contained in it. This specification provides a way to store verifiable credential status and verify it in a decentralized context. The architecture enables the verifiable credentials holders to store derived status information that can only be resolved by the issuer without prior centralized storage.
+Credentials give information about a subject that helps in its recognition by a third party, usually to provide a service or state an assertion given its traits. The verification of credentials needs additional information to assert the validity of the information contained in it. This specification provides a way to store verifiable credential status and verify it in a decentralized context. The architecture enables the verifiable credential holders to store derived status information that can only be resolved by the issuer without prior centralized storage.
 
 ## Status of the document
 
@@ -10,7 +10,7 @@ This document is a working draft of a possible specification.
 
 ## Motivation
 
-As stated the status adds information to verifiable credentials to assert credential validity. That piece of information anotates data, the closer it is to the actual information it denotes, the less there are possibilities of uncoupling of the data and its status. Providing a way to store both information at the same place gives a way to have that proximity. The decentralized way of seeing status storage differ from actual status list specifications since it requires no centralized storage for statuses which makes them faster to resolve and then better scales with the projected number of emitted verifiable credentials. It also makes other tradeoffs about privacy (see 6. Privacy considerations) staying reasonable with those concerns. This specification is open to contributions to better solve the status issue deepening further the work on revocation which is still ongoing.
+As stated the status adds information to verifiable credentials to assert credential validity. That piece of information annotates data, the closer it is to the actual information it denotes, the less there are possibilities of uncoupling of the data and its status. Providing a way to store both information at the same place gives a way to provide that proximity. The decentralized way of seeing status storage differ from actual status list specifications since it requires no centralized storage for statuses which makes them faster to resolve and then better scales with the projected number of emitted verifiable credentials. It also makes other tradeoffs about privacy (see 6. Privacy considerations) staying reasonable with those concerns. This specification is open to contributions to better solve the status issue deepening further the work on revocation which is still ongoing.
 
 ## 1. Introduction
 ### 1.1 Underlying specifications
@@ -31,7 +31,7 @@ TBD
 
 On top of the [Verifiable Credentials Data Model v2.0 Terminology](https://www.w3.org/TR/vc-data-model-2.0/#terminology) the following terms will be used:
 
-- __verifiable credential status__: The status of a verifiable credential at a given point in time. The different statuses give information about the validity of the verifiable credential data. This information can be given for a set of verifiable credentials providing the status of each piece of information in a more convenient way.
+- __verifiable credential status__: The status of a verifiable credential at a given point in time. The different statuses give information about the validity of the verifiable credential data. This information can be given for a set of claims providing the status of each piece of information in a more convenient way.
 - __status information__
 - __status token__
 - __status table__
@@ -45,18 +45,18 @@ Status tokens are the major components of this specification. They enable holder
 
 #### Example
 ```
-wpfDjsKrwrkSw4wDAA~3a479fde
+BiwBG3EYQhLDjAMA~2f0f96b9
 ```
 
 ### 3.2 Status information
 
-The status information, as the first part of status tokens, is encoded to store a low-weighted payload that contains the iat and the token time to live. It helps to resolve the status contained in the derived token. Not being part of token verification algorithm, this part contains information about when the token was issued. The contained information is stored in a binary format and URL-safe base 64 encoded.
+The status information, as the first part of status tokens, is encoded to store a low-weighted payload that contains the iat and the status token time to live. It helps to resolve the status contained in the derived token. Not being part of token verification algorithm, this part contains information about when the token was issued. The contained information is stored in a binary format and URL-safe base 64 encoded.
 
 ```
 <iat>{4}<binary encode Time To Live>{4}
 ```
 
-The iat may be a 7 bytes long and binary encoded. The time to live may also be padded binary encoded integer to save storage. Those parts may be concatenated to form the status information.
+The iat may be 7 bytes long and binary encoded. The time to live may also be padded binary encoded integer to save storage. Those parts may be concatenated to form the status information.
 
 ### 3.1 Derived Status
 ![Status derivation](https://raw.githubusercontent.com/malach-it/vc-decentralized-status/main/images/non-opaque-salt.png)
@@ -75,7 +75,7 @@ A. Did document
   "service": [
     {
       "id": "#statusSolver",
-      "serviceEndpoint": "https://oauth.boruta.patatoid.fr/did/public/resolve_status/",
+      "serviceEndpoint": "https://oauth.boruta.patatoid.fr/did/resolve_status/",
       "type": "LinkedDomains"
     }
   ]
@@ -83,11 +83,11 @@ A. Did document
 ```
 B. Request
 ```
-GET https://api.godiddy.com/0.1.0/universal-resolver/identifiers/did:indy:danube:VUQ36xG7PRccjojjgzmJBa?service=statusSolver&relativeRef=wpfDjsKrwrkSw4wDAA~3a479fde
+GET https://api.godiddy.com/0.1.0/universal-resolver/identifiers/did:indy:danube:QTP7U54DZXsUpdrwWu27wB?service=statusSolver&relativeRef=BiwBG3EYQhLDjAMA~2f0f96b9
 
 
 303 See Other
-Location: https://oauth.boruta.patatoid.fr/did/public/resolve_status/wpfDjsKrwrkSw4wDAA~3a479fde
+Location: https://oauth.boruta.patatoid.fr/did/resolve_status/BiwBG3EYQhLDjAMA~2f0f96b9
 ```
 
 ### 4.2 Interfaces
@@ -151,7 +151,7 @@ resolve status_token(secret: string, status_token: string): string {
 		@status_table,
 		'invalid',
 		lambda status, result:
-			if HOTP(secret, DIV(NOW(), info[ttl]) + shift(status)) == derived_status
+			if HOTP(secret, DIV(NOW(:second), info[ttl]) + shift(status)) == derived_status
 				return status
 			else
 				return result
@@ -167,15 +167,15 @@ Status tokens are self-contained but only resolvable by the issuer which owns a 
 
 ### 6.2 Status table
 
-The status table represents the list of possible statuses that are encoded into a shift integer for lowering to a tiny list the issuer needed storage. The status list may be standardized globally or issuer-wide for the issuer emitted set of credentials to lower the verifiable credentials type disclosability. The status token being part of a credential and including a time to live, a way to check if statuses are hidden is to resolve it against a given status table whether the status token is valid to ensure a status is found. Otherwise, a hidden status has been set by the issuer. This check can be performed with a past timestamp, then, once issued there will always be a way to check if the status of a token has been hidden provided an issuer secret. Statuses may help categorize the anotated data. In order to do so, the element of the status table may be part of the same category.
+The status table represents the list of possible statuses that are encoded into a shift integer for lowering to a tiny list the issuer needed storage. The status list may be standardized globally or issuer-wide for the issuer emitted set of credentials to lower the verifiable credentials type disclosability. The status token being part of a credential and including a time to live, a way to check if statuses are hidden is to resolve it against a given status table whether the status token is valid to ensure a status is found. Otherwise, a hidden status has been set by the issuer. This check can be performed with a past timestamp, then, once issued there will always be a way to check if the status of a token has been hidden provided an issuer secret. Statuses may help categorize the annotated data. In order to do so, the element of the status table may be part of the same category.
 
 ### 6.3 Granularity
 
 Some verifiable credential formats support selective disclosure enabling to share part of the data contained in the verifiable credential payload without disclosing the remaining part. Status tokens can reference individual information or a set of disclosures. Taking the example of [Selective Disclosure for JWTs](https://www.ietf.org/archive/id/draft-ietf-oauth-selective-disclosure-jwt-09.html), the status token can replace the suggested opaque salt to include the status information of the associated disclosure. The decentralization architecture of this suggested specification makes the status storage to be handled by the holders helping to reduce the weight of single-place storage.
 
-### 6.4 Anotation
+### 6.4 Annotation
 
-By definition a status is an anotation on the data it denotes. Following this specification, the issuer is not limited for the statuses it set which may include statuses the holder may not be aware of. While this information is not disclosable, the issuer can hide statuses from the holder and the verifier which gives the ability to track them on verfication. When the verifier contacts the issuer to get the status, the latter has the ability to track the remote ip of the verifier making then the usage of the custom statuses trackable. This issue may be mitigated by reducing the possible statuses which may not be possible with the suggested algorithms or by making the status publicly readable for both the holder and the verifier.
+By definition a status is an annotation on the data it denotes. Following this specification, the issuer is not limited for the statuses it set which may include statuses the holder may not be aware of. While this information is not disclosable, the issuer can hide statuses from the holder and the verifier which gives the ability to track them on verfication. When the verifier contacts the issuer to get the status, the latter has the ability to track the remote ip of the verifier making then the usage of the custom statuses trackable. This issue may be mitigated by reducing the possible statuses which may not be possible with the suggested algorithms or by making the status publicly readable for both the holder and the verifier.
 
 ## 7. About revocation
 
