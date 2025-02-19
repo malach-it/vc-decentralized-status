@@ -198,3 +198,13 @@ Status tokens are emitted by the issuer of the backed-up data. This issuer is th
 ## 7. About revocation
 
 Considering the status as an annotation and that annotations prove the data and the data proves the annotations, seeing them as paradoxes, it is not possible to see revocation within the proposed framework for statuses. It would enforce to break one of the before statements proving the annotation is false and not yet to be considered. Then the revocation subject is quite an important subject to fix impairments. Those contain the identity information itself as a component and corrective actions in the annotation would fail the privacy brought by the decentralized identity concepts enforcing both the holder and the verifier to disclose identity information to the issuer.
+
+## 8. Going further, status chains
+
+It would be possible to store an ordered list of statuses using a merkle tree. This would permit for an issuer to emit more than a single status but a list. This would require to use the complete hash of HOTP values at a single point of time providing the same hash format for all the emitted tokens. The verification would be made by rebuilding the tree, one status after the other which be made of different categories (status lists) building a merkle tree from result to result.
+
+![Status chains](https://raw.githubusercontent.com/malach-it/vc-decentralized-status/main/images/status-chains.png)
+
+### 8.1 Privacy considerations
+
+Status chains would permit to store an unlimited number of statuses which would weaken more the problem of hidden statuses. As stated in 6.2, those can be highlighted by a verification given the issuer secret.
