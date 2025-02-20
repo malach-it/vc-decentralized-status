@@ -201,16 +201,17 @@ Considering the status as an annotation and that annotations prove the data and 
 
 ## 8. Going further, status chains
 
-It would be possible to store an ordered list of statuses using a merkle tree. This would permit for an issuer to emit more than a single status but a list. This would require to use the complete hash of HOTP values at a single point of time providing the same hash format for all the emitted tokens. The verification would be made by rebuilding the tree, one status after the other which be made of different categories (status lists) building a merkle tree from result to result.
+It would be possible to store an ordered list of statuses using a merkle tree. This would permit for an issuer to emit more than a single status but a list. This would require to use the complete hash of HOTP values at a single point of time providing the same hash format for all the emitted tokens. The verification would be made by rebuilding the tree, one status after the other which be made of different categories (status lists) building a merkle tree from result to result. The merkle tree would act as a composition law for the given status tokens, other compositions can be found.
 
 ![Status chains](https://raw.githubusercontent.com/malach-it/vc-decentralized-status/main/images/status-chains.png)
 
-### 8.1 Including the status list in the chain
+### 8.1 Privacy considerations
+
+Status chains would permit to store an unlimited number of statuses which would weaken more the hidden statuses issue. As stated in 6.2, those can be highlighted by a verification given the issuer secret and the original statuses.
+
+### 8.2 Including the status list in the chain
 
 Apart from a status token, the corresponding status list can be derived using a merkle tree, the status being a choice among the given list. This would minimize the possibility of collisions, enforcing the issuer to provide the status list state at token emission. The pattern would not enforce the issuer to include the list associated to the token, but the contracted list must contain the status given by the associated token to provide the validity of the couple list / choice. Further discussions can be made for having choices that do not influence the resulting status token which is at first sight not possible with modern computing.
 
 ![Couple list / choice](https://raw.githubusercontent.com/malach-it/vc-decentralized-status/main/images/chosing-a-status-among-a-list.png)
 
-### 8.2 Privacy considerations
-
-Status chains would permit to store an unlimited number of statuses which would weaken more the problem of hidden statuses. As stated in 6.2, those can be highlighted by a verification given the issuer secret.
