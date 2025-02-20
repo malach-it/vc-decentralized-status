@@ -13,3 +13,5 @@ Those works are still experimental, if you have production use cases that would 
 ## Code of conduct
 
 These works follow the [here](https://io.malach.it/code-of-conduct.html) code of conduct.
+
+&copy; 2025 malachit
