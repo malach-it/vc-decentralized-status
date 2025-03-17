@@ -214,3 +214,9 @@ Apart from a status token, the corresponding status list can be derived using a 
 ### 8.2 Public statuses
 
 An other way to see status would be to include the status list in the chain and publicly expose those statuses and the status list derivation, that would help to prevent from the hidden statuses issue. Then status tokens would be publicly solvable, the token being itself private. An example would be to have the statuses given, namely "valid", "suspended", "revoked" and have the signing did as secret.
+
+### 8.3 Choosing multiple statuses
+
+Using binary sum as a composition law, one can choose multiple statuses and give them in their textual form along with the rest corresponding to the sum of the remaining status tokens. Computing the chosen statuses token and adding it to the rest should result to the status list token. This would be a way to enable selective disclosure without disclosing the number of statuses included in the token. Metaphoring the statuses as the verbal communication and the remaining sum as the non-verbal one.
+
+![Status sum](https://raw.githubusercontent.com/malach-it/vc-decentralized-status/main/images/choosing-multiple-statuses.png)
