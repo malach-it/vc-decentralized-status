@@ -201,22 +201,22 @@ Considering the status as an annotation and that annotations prove the data and 
 
 ## 8. Going further, status chains
 
-It would be possible to store an ordered list of statuses using a merkle tree. This would permit for an issuer to emit more than a single status but a list. This would require to use the complete hash of HOTP values at a single point of time providing the same hash format for all the emitted tokens. The verification would be made by rebuilding the tree, one status after the other which be made of different categories (status lists) building a merkle tree from result to result. The merkle tree would act as a composition law for the given status tokens, other compositions can be found.
+It would be possible to store a list of statuses composing the status tokens one with the other. Composing the status tokens would result to a merkle tree. This would permit for an issuer to emit more than a single status but a list. The hash of HOTP values are to be taken at a single point of time providing the same hash format for all the emitted tokens. The verification would be made by rebuilding the composed tree, one status after the other keeping the same category building a merkle tree from result to result. The composition law for the given status tokens help to store more data staying in the same category.
 
 ![Status chains](https://raw.githubusercontent.com/malach-it/vc-decentralized-status/main/images/status-chains.png)
 
-### 8.1 Including the status list in the chain
+### 8.1 Choosing a status among the chain
 
-Apart from a status token, the corresponding status list can be derived using a merkle tree, the status being a choice among the given list. This would minimize the possibility of collisions, enforcing the issuer to provide the status list state at token emission. The pattern would not enforce the issuer to include the list associated to the token, but the contracted list must contain the status given by the associated token to provide the validity of the couple list / choice. Further discussions can be made for having choices that do not influence the resulting status token which is at first sight not possible with modern computing.
+Apart from a single status token, the corresponding status list can be derived using a composition law, the status being a choice among the given list. This would enforce the issuer to provide the status list state at token emission. The pattern would not enforce the issuer to include the list associated to the token, but the contracted list must contain the status given by the associated token to provide the validity of the couple list / choice. Further discussions can be made for having choices that do not influence the resulting status token which is at first sight not possible with modern computing.
 
 ![Couple list / choice](https://raw.githubusercontent.com/malach-it/vc-decentralized-status/main/images/chosing-a-status-among-a-list.png)
 
 ### 8.2 Public statuses
 
-An other way to see status would be to include the status list in the chain and publicly expose those statuses and the status list derivation, that would help to prevent from the hidden statuses issue. Then status tokens would be publicly solvable, the token being itself private. An example would be to have the statuses given, namely "valid", "suspended", "revoked" and have the signing did as secret.
+An other way to see status would be to include the status list in the chain and publicly expose those statuses and the status list derivation, that would help to prevent from the hidden statuses issue. Then status tokens would be publicly solvable, the token being private. An example would be to have the statuses given, namely "valid", "suspended", "revoked" and have the signing did as secret.
 
 ### 8.3 Choosing multiple statuses
 
-Using binary sum as a composition law, one can choose multiple statuses and give them in their textual form along with the rest corresponding to the sum of the remaining status tokens. Computing the chosen statuses token and adding it to the rest should result to the status list token. This would be a way to enable selective disclosure without disclosing the number of statuses included in the token. Metaphoring the statuses as the verbal communication and the remaining sum as the non-verbal one.
+Using a binary sum as composition law, multiple statuses can be choosen from the given list. Giving them in their textual form along with the remaining sum of the other status tokens help to prove the statuses are part of the associated status list. This would also fix the hidden statuses issue. Computing the chosen status tokens sum and adding it to the rest results to the status list token. This would be a way to enable selective disclosure. It helps to selectively disclose status information without disclosing the number of statuses included in the token. Metaphoring the statuses as the verbal communication and the remaining sum as the non-verbal one.
 
 ![Status sum](https://raw.githubusercontent.com/malach-it/vc-decentralized-status/main/images/choosing-multiple-statuses.png)
