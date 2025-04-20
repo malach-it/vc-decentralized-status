@@ -220,3 +220,6 @@ An other way to see status would be to include the status list in the chain and 
 Using a binary sum as composition law, multiple statuses can be choosen from the given list. Giving them in their textual form along with the remaining sum of the other status tokens help to prove the statuses are part of the associated status list. This would also fix the hidden statuses issue. Computing the chosen status tokens sum and adding it to the rest results to the status list token. This would be a way to enable selective disclosure. It helps to selectively disclose status information without disclosing the number of statuses included in the token. Metaphoring the statuses as the verbal communication and the remaining sum as the non-verbal one.
 
 ![Status sum](https://raw.githubusercontent.com/malach-it/vc-decentralized-status/main/images/choosing-multiple-statuses.png)
+
+If the status list forms a coherent set, some disclosed subsets of that list can give meaningful information by themselves, choosing such a set would express information about the annotated data itself. That ability of such choice should be inherent to the coherence of the list and is not covered by this draft. It is probable that in modern computing only human can perform this.
+
