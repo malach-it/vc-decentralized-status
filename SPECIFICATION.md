@@ -154,18 +154,15 @@ decode_token_info(token_info: string): hashtable {
   return result
 }
 
-resolve status_token(secret: string, status_token: string): string {
+resolve_status_token(secret: string, status_token: string): string {
 	[token_info, derived_status] = SPLIT(status_token, '~')
 	info = decode_token_info(BASE64_DECODE(token_info))
-	REDUCE(
-		@status_table,
-		'invalid',
-		lambda status, result:
-			if HOTP(secret, DIV(NOW(:second), info[ttl]) + shift(status)) == derived_status
-				return status
-			else
-				return result
-	)
+
+  statuses = CLONE(@status_table)
+  result = 'invalid'
+  while status = POP(statuses):
+    if HOTP(secret, DIV(NOW(:second), info[ttl]) + shift(status)) == derived_status
+			return status
 }
 ```
 
